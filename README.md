@@ -1,4 +1,5 @@
-# 🪐 Cosmic Login 🎥 Demo: ![https://oneoshub.com/oneos/login]
+# 🪐 Cosmic Login 
+Live Demo: ![https://oneoshub.com/oneos/login]
 
 **A login screen that's also a fully explorable 3D universe.**
 
