@@ -1,5 +1,5 @@
 # 🪐 Interactive Cosmic Login 
-Live Demo: ![[https://oneoshub.com/oneos/login](https://rizwanalvi1.github.io/interactive-cosmic-login/)]
+Live Demo: ![https://rizwanalvi1.github.io/interactive-cosmic-login/]
 
 **A login screen that's also a fully explorable 3D universe.**
 
