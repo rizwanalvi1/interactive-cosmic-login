@@ -124,4 +124,4 @@ static/assets/earth/*.{jpg,png}     # Earth textures
 
 ## 📄 License
 
-Add your preferred license here before publishing.
+Apache 2.0
