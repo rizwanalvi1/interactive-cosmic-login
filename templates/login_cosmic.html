@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cosmic Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/cosmic-login.css') }}">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main class="cosmic-login-page" id="cosmicPage">
+
+    <!-- Layer 1 + 2: WebGL universe (Three.js) -->
+    <canvas class="universe-canvas" id="universeCanvas"
+            aria-label="Animated 3D universe background" role="img"></canvas>
+
+    <!-- Layer 3: tooltip system for stars and planets -->
+    <div class="cosmic-tooltip" id="cosmicTooltip" role="tooltip" aria-hidden="true"></div>
+
+    <!-- Scene HUD (name of the randomly generated universe) -->
+    <div class="scene-hud" id="sceneHud" aria-live="polite">
+      <span class="scene-hud-label">Sector</span>
+      <span class="scene-hud-name" id="sceneName"></span>
+      <span class="scene-hud-coords" id="sceneCoords"></span>
+    </div>
+
+    <!-- Search navigator toggle button -->
+    <button class="nav-toggle" id="navToggle" type="button"
+            aria-label="Show celestial navigator" title="Search destinations">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="2"/>
+        <text x="12" y="16" text-anchor="middle" font-size="14" font-weight="bold" fill="currentColor">i</text>
+      </svg>
+    </button>
+
+    <!-- Celestial search: type a name, fly there -->
+    <div class="cosmic-search" id="cosmicSearch" aria-label="Celestial destination search" aria-hidden="true">
+      <div class="search-panel">
+        <div class="search-kicker">Navigator</div>
+        <div class="search-field">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+            <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input type="text" id="searchInput" placeholder="Andromeda, Earth, Sirius…"
+                 autocomplete="off" spellcheck="false"
+                 role="combobox" aria-expanded="false" aria-controls="searchResults"
+                 aria-label="Search celestial objects">
+        </div>
+        <div class="quick-destinations" aria-label="Featured celestial destinations">
+          <button type="button" data-search-target="Andromeda Galaxy">Andromeda</button>
+          <button type="button" data-search-target="Milky Way">Milky Way</button>
+          <button type="button" data-search-target="Earth">Earth</button>
+        </div>
+      </div>
+      <ul class="search-results" id="searchResults" role="listbox" hidden></ul>
+    </div>
+
+    <!-- Layer 4: login panel -->
+    <section class="login-panel" id="loginPanel" aria-label="Login">
+      <button class="panel-minimize" id="minimizeLogin" type="button"
+              aria-label="Hide login panel" title="Hide login panel">&#8212;</button>
+
+      <div class="login-brand">
+        <button type="button" class="brand-orb" id="factToggle"
+                aria-expanded="false" aria-controls="factCard"
+                aria-label="Show a cosmic fun fact" title="Reveal a cosmic fun fact"></button>
+        <h1>Welcome Back</h1>
+        <p>Sign in to continue your journey</p>
+        <p class="orb-hint" aria-hidden="true">tap the planet for a cosmic fact</p>
+      </div>
+
+      <!-- Wikipedia-powered fun fact, hidden until the planet orb is tapped -->
+      <aside class="fact-card is-loading" id="factCard" aria-label="Cosmic fun fact" aria-hidden="true">
+        <div class="fact-image-wrap">
+          <img id="factImage" alt="" hidden>
+          <span class="fact-badge" id="factBadge">Wikipedia</span>
+        </div>
+        <div class="fact-body">
+          <h2 id="factTitle">Scanning deep space…</h2>
+          <p class="fact-type" id="factType"></p>
+          <p class="fact-text" id="factText"></p>
+          <a class="fact-link" id="factLink" href="#" target="_blank" rel="noopener" hidden>
+            Read more on Wikipedia →
+          </a>
+        </div>
+      </aside>
+
+      {% if enable_real_auth %}
+      <form class="login-form" method="POST" action="{{ login_action_url }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      {% else %}
+      <form class="login-form" id="dummyLoginForm" novalidate>
+      {% endif %}
+
+        <label class="field">
+          <span>Username</span>
+          <input name="username" type="text" placeholder="Enter username"
+                 autocomplete="username" autocapitalize="none" spellcheck="false">
+        </label>
+
+        <label class="field">
+          <span>Password</span>
+          <input name="password" type="password" placeholder="Enter password"
+                 autocomplete="current-password">
+        </label>
+
+        <button type="submit" class="primary-login-btn">Login</button>
+      </form>
+
+      <div class="divider" aria-hidden="true"><span>or</span></div>
+
+      {% if enable_real_auth %}
+      <a href="{{ google_login_url }}" class="gmail-login-btn">
+        <img src="{{ url_for('static', filename='assets/icons/gmail.svg') }}" alt="" width="20" height="20">
+        Continue with Gmail
+      </a>
+      {% else %}
+      <button type="button" class="gmail-login-btn" id="gmailLoginBtn">
+        <img src="{{ url_for('static', filename='assets/icons/gmail.svg') }}" alt="" width="20" height="20">
+        Continue with Gmail
+      </button>
+      {% endif %}
+
+      <p class="demo-note" id="demoMessage" aria-live="polite">Cosmic interface demo</p>
+    </section>
+
+    <!-- Layer 5: bottom controls / restore login button -->
+    <button class="restore-login-btn" id="restoreLoginBtn" type="button" hidden>
+      <span class="restore-orb" aria-hidden="true"></span>
+      Show Login
+    </button>
+
+    <p class="explore-hint" id="exploreHint" aria-hidden="true">
+      Drag to orbit &nbsp;&middot;&nbsp; scroll to fly in / out &nbsp;&middot;&nbsp; click a planet to visit it
+    </p>
+
+  </main>
+
+  <script type="module" src="{{ url_for('static', filename='js/cosmic-login.js') }}"></script>
+</body>
+</html>

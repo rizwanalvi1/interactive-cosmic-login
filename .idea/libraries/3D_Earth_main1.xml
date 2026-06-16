@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="3D-Earth-main1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/more/3D-Earth-main.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
