@@ -105,6 +105,171 @@ const CosmicLogin = {
       },
     ],
 
+    // Dwarf planets — same clickable pattern as the major planets. Add more by
+    // dropping another entry here (orbit = stylised distance, size = radius).
+    dwarfPlanets: [
+      {
+        name: "Ceres",
+        type: "Dwarf Planet",
+        dist: "413 million km from Sun",
+        orbit: 73, // rides within the asteroid belt
+        size: 1.1,
+        palette: ["#cfc6b8", "#8a8073", "#3a342c"],
+        wikiTitle: "Ceres (dwarf planet)",
+      },
+      {
+        name: "Pluto",
+        type: "Dwarf Planet",
+        dist: "5.9 billion km from Sun",
+        orbit: 172,
+        size: 1.6,
+        palette: ["#e8d6c0", "#b08968", "#4a382a"],
+        wikiTitle: "Pluto",
+      },
+      {
+        name: "Haumea",
+        type: "Dwarf Planet",
+        dist: "6.5 billion km from Sun",
+        orbit: 184,
+        size: 1.2,
+        palette: ["#e9ecef", "#ced4da", "#495057"],
+        wikiTitle: "Haumea",
+      },
+      {
+        name: "Makemake",
+        type: "Dwarf Planet",
+        dist: "6.8 billion km from Sun",
+        orbit: 196,
+        size: 1.3,
+        palette: ["#f0c8a0", "#c08552", "#5a3a22"],
+        wikiTitle: "Makemake",
+      },
+      {
+        name: "Eris",
+        type: "Dwarf Planet",
+        dist: "10.1 billion km from Sun",
+        orbit: 212,
+        size: 1.5,
+        palette: ["#dfe6ea", "#aab7bf", "#4a565c"],
+        wikiTitle: "Eris (dwarf planet)",
+      },
+    ],
+
+    // Famous deep-sky landmarks rendered as glowing, clickable, searchable
+    // sprites. Add more by appending an entry (kind: galaxy | nebula | cluster).
+    deepSky: [
+      {
+        name: "Orion Nebula",
+        type: "Diffuse Nebula (M42)",
+        meta: "Distance: 1,344 light years · Stellar nursery in Orion's Sword",
+        wikiTitle: "Orion Nebula",
+        kind: "nebula",
+        color: "#f783ac",
+        distance: 1500,
+        scale: 95,
+      },
+      {
+        name: "Pleiades",
+        type: "Open Star Cluster (M45)",
+        meta: "Distance: 444 light years · The Seven Sisters",
+        wikiTitle: "Pleiades",
+        kind: "cluster",
+        color: "#a5d8ff",
+        distance: 1200,
+        scale: 70,
+      },
+      {
+        name: "Crab Nebula",
+        type: "Supernova Remnant (M1)",
+        meta: "Distance: 6,500 light years · Remnant of a 1054 AD supernova",
+        wikiTitle: "Crab Nebula",
+        kind: "nebula",
+        color: "#b197fc",
+        distance: 2200,
+        scale: 72,
+      },
+      {
+        name: "Ring Nebula",
+        type: "Planetary Nebula (M57)",
+        meta: "Distance: 2,300 light years · A dying star's glowing shell",
+        wikiTitle: "Ring Nebula",
+        kind: "nebula",
+        color: "#63e6be",
+        distance: 2600,
+        scale: 55,
+      },
+      {
+        name: "Eagle Nebula",
+        type: "Emission Nebula (M16)",
+        meta: "Distance: 5,700 light years · Home of the Pillars of Creation",
+        wikiTitle: "Eagle Nebula",
+        kind: "nebula",
+        color: "#ffa94d",
+        distance: 2400,
+        scale: 82,
+      },
+      {
+        name: "Lagoon Nebula",
+        type: "Emission Nebula (M8)",
+        meta: "Distance: 4,100 light years · Vast star-forming cloud in Sagittarius",
+        wikiTitle: "Lagoon Nebula",
+        kind: "nebula",
+        color: "#ff8787",
+        distance: 2000,
+        scale: 78,
+      },
+      {
+        name: "Hercules Cluster",
+        type: "Globular Cluster (M13)",
+        meta: "Distance: 22,200 light years · ~300,000 ancient stars",
+        wikiTitle: "Messier 13",
+        kind: "cluster",
+        color: "#ffe066",
+        distance: 2800,
+        scale: 60,
+      },
+      {
+        name: "Whirlpool Galaxy",
+        type: "Spiral Galaxy (M51)",
+        meta: "Distance: 23 million light years · Classic grand-design spiral",
+        wikiTitle: "Whirlpool Galaxy",
+        kind: "galaxy",
+        color: "#d0bfff",
+        distance: 4200,
+        scale: 150,
+      },
+      {
+        name: "Triangulum Galaxy",
+        type: "Spiral Galaxy (M33)",
+        meta: "Distance: 2.7 million light years · Third-largest Local Group galaxy",
+        wikiTitle: "Triangulum Galaxy",
+        kind: "galaxy",
+        color: "#d0ebff",
+        distance: 3600,
+        scale: 170,
+      },
+      {
+        name: "Sombrero Galaxy",
+        type: "Spiral Galaxy (M104)",
+        meta: "Distance: 31 million light years · Bright bulge ringed by dark dust",
+        wikiTitle: "Sombrero Galaxy",
+        kind: "galaxy",
+        color: "#ffe8cc",
+        distance: 5200,
+        scale: 160,
+      },
+      {
+        name: "Pinwheel Galaxy",
+        type: "Spiral Galaxy (M101)",
+        meta: "Distance: 21 million light years · Face-on spiral in Ursa Major",
+        wikiTitle: "Pinwheel Galaxy",
+        kind: "galaxy",
+        color: "#e5dbff",
+        distance: 4800,
+        scale: 150,
+      },
+    ],
+
     fictionalScenes: [
       {
         kind: "fiction",
@@ -235,6 +400,7 @@ const CosmicLogin = {
     focusObj: null,
     starUniforms: null,
     planets: [],
+    earthDetail: null,
     comets: [],
     nebulae: [],
     galaxies: [],
@@ -262,6 +428,8 @@ const CosmicLogin = {
     dragStart: { x: 0, y: 0, theta: 0, phi: 0 },
 
     demoTimer: null,
+    factRequestId: 0,
+    objectFactRequestId: 0,
     el: {},
   },
 
@@ -292,6 +460,12 @@ const CosmicLogin = {
       search: document.getElementById("cosmicSearch"),
       searchInput: document.getElementById("searchInput"),
       searchResults: document.getElementById("searchResults"),
+      objectCard: document.getElementById("objectCard"),
+      objectCardClose: document.getElementById("objectCardClose"),
+      objectCardTitle: document.getElementById("objectCardTitle"),
+      objectCardType: document.getElementById("objectCardType"),
+      objectCardText: document.getElementById("objectCardText"),
+      objectCardLink: document.getElementById("objectCardLink"),
     };
 
     s.isMobile = window.matchMedia("(max-width: 768px)").matches;
@@ -315,18 +489,10 @@ const CosmicLogin = {
   },
 
   chooseScene() {
-    const c = this.config;
-    let visited = false;
-    try {
-      visited = localStorage.getItem(c.visitedKey) === "1";
-      localStorage.setItem(c.visitedKey, "1");
-    } catch (e) {
-      /* storage blocked — always show home */
-    }
-
-    if (!visited) return c.solScene;
-    // returning visitor: anywhere in the universe, home included
-    return this.pick([c.solScene, ...c.fictionalScenes]);
+    // One consistent universe — the Milky Way with our Sol system — every
+    // visit. Keeping the Sol system always present means Earth, the Sun and
+    // every planet are reliably explorable and searchable in the navigator.
+    return this.config.solScene;
   },
 
   /* ---------------------------------------------------------- helpers */
@@ -406,6 +572,7 @@ const CosmicLogin = {
     if (scene.kind === "sol") {
       this.createSun();
       this.createSolarSystem();
+      this.createDwarfPlanets();
       this.createMilkyWay();
       this.createAndromeda();
       s.el.sceneCoords.textContent = scene.coords;
@@ -427,6 +594,8 @@ const CosmicLogin = {
     this.createDeepField();
     this.createStarfield();
     this.createNamedStars();
+    this.createDeepSkyObjects();
+    this.createMajorConstellations();
     this.createNebula();
     if (!s.reducedMotion) this.createComets();
 
@@ -474,6 +643,7 @@ const CosmicLogin = {
       meta: "Distance: 0 km — you are here",
       kind: "star",
       focusDist: 130,
+      wikiTitle: "Sun",
     };
     s.scene.add(proxy);
     s.hoverables.push(proxy);
@@ -567,6 +737,7 @@ const CosmicLogin = {
         meta: "Distance: " + p.dist,
         kind: "planet",
         focusDist: p.size * 5 + 4,
+        wikiTitle: p.name === "Mercury" ? "Mercury (planet)" : p.name,
       };
       group.add(body);
 
@@ -610,6 +781,7 @@ const CosmicLogin = {
           meta: "Distance: 384,400 km from Earth",
           kind: "planet",
           focusDist: 9,
+          wikiTitle: "Moon",
         };
         moonPivot.add(moon);
         s.hoverables.push(moon);
@@ -639,6 +811,7 @@ const CosmicLogin = {
             meta: "The real Moon has no submoons — artistic license",
             kind: "planet",
             focusDist: 5,
+            wikiTitle: "Subsatellite",
           };
           subPivot.add(sub);
           s.hoverables.push(sub);
@@ -657,6 +830,11 @@ const CosmicLogin = {
         orbitSpeed: 0.5 / Math.pow(p.orbit, 0.95),
         spin: this.rand(0.04, 0.1),
       });
+
+      if (p.name === "Earth") {
+        s.earthDetail = this.createDetailedEarthLayer(p.size);
+        s.scene.add(s.earthDetail.group);
+      }
     });
 
     // asteroid belt between Mars and Jupiter
@@ -684,6 +862,97 @@ const CosmicLogin = {
     );
     s.scene.add(belt);
     s.belt = belt;
+  },
+
+  /* ----------------------------------------------- dwarf planets */
+  createDwarfPlanets() {
+    const s = this.state;
+
+    (this.config.dwarfPlanets || []).forEach((p) => {
+      // faint, slightly more transparent orbit line than the major planets
+      const segs = 128,
+        pts = [];
+      for (let i = 0; i <= segs; i++) {
+        const a = (i / segs) * Math.PI * 2;
+        pts.push(
+          new THREE.Vector3(Math.cos(a) * p.orbit, 0, Math.sin(a) * p.orbit),
+        );
+      }
+      const line = new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(pts),
+        new THREE.LineBasicMaterial({
+          color: 0xf8f9fa,
+          transparent: true,
+          opacity: 0.04,
+        }),
+      );
+      s.scene.add(line);
+
+      const pivot = new THREE.Group();
+      pivot.rotation.y = this.rand(0, Math.PI * 2);
+      pivot.rotation.x = this.rand(-0.18, 0.18); // dwarf planets ride inclined orbits
+      s.scene.add(pivot);
+
+      const group = new THREE.Group();
+      group.position.set(p.orbit, 0, 0);
+      pivot.add(group);
+
+      const tex = this.makePlanetTexture(p.palette);
+      const body = new THREE.Mesh(
+        new THREE.SphereGeometry(p.size, 32, 32),
+        new THREE.MeshStandardMaterial({
+          map: tex,
+          roughness: 0.95,
+          metalness: 0.04,
+          bumpMap: tex,
+          bumpScale: 0.2,
+        }),
+      );
+      body.rotation.z = this.rand(-0.4, 0.4);
+      group.add(body);
+
+      // a soft glow marker so these tiny far-out worlds read as points of
+      // light against the dark, instead of near-invisible specks
+      const marker = new THREE.Sprite(
+        new THREE.SpriteMaterial({
+          map: this.makeGlowTexture(p.palette[0], "transparent"),
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+          transparent: true,
+          opacity: 0.6,
+        }),
+      );
+      marker.scale.setScalar(p.size * 6 + 4);
+      group.add(marker);
+
+      // a generous invisible hit sphere so they stay easy to tap (a touch
+      // target the size of the body alone is far too small on a phone/tablet)
+      const proxy = new THREE.Mesh(
+        new THREE.SphereGeometry(Math.max(5, p.size * 4), 16, 16),
+        new THREE.MeshBasicMaterial({ visible: false }),
+      );
+      proxy.userData = {
+        name: p.name,
+        type: p.type,
+        meta: "Distance: " + p.dist,
+        kind: "planet",
+        focusDist: p.size * 6 + 8,
+        wikiTitle: p.wikiTitle || p.name,
+      };
+      group.add(proxy);
+
+      s.hoverables.push(proxy);
+      s.searchExtras.push(proxy);
+      s.planets.push({
+        pivot,
+        body,
+        moonPivot: null,
+        subPivots: [],
+        bob: null,
+        orbitSpeed: 0.5 / Math.pow(p.orbit, 0.95),
+        spin: this.rand(0.04, 0.1),
+      });
+    });
   },
 
   /* ------------------------------------------------ fictional planets */
@@ -735,6 +1004,7 @@ const CosmicLogin = {
         meta: "Synthetic sector: " + sector,
         kind: "planet",
         focusDist: size * 5 + 4,
+        wikiTitle: "Exoplanet",
       };
       group.add(body);
 
@@ -1053,6 +1323,7 @@ const CosmicLogin = {
       meta: "Distance: 2.5 million light years",
       kind: "galaxy",
       focusDist: 2150,
+      wikiTitle: "Andromeda Galaxy",
       view: { theta: -0.72, phi: 1.02, radius: 2150, mobileRadius: 2650 },
     };
     group.add(proxy);
@@ -1431,81 +1702,125 @@ const CosmicLogin = {
   },
 
   makeTerranTexture() {
-    const W = 512,
-      H = 256;
-    const cv = document.createElement("canvas");
-    cv.width = W;
-    cv.height = H;
-    const ctx = cv.getContext("2d");
+    return this.makeEarthTexture("/oneos/static/assets/earth/earthmap.jpg");
+  },
 
-    // deep ocean base
-    const base = ctx.createLinearGradient(0, 0, 0, H);
-    base.addColorStop(0, "#0b3d6b");
-    base.addColorStop(0.5, "#1864ab");
-    base.addColorStop(1, "#0b3d6b");
-    ctx.fillStyle = base;
-    ctx.fillRect(0, 0, W, H);
-
-    // continents: clusters of irregular blobs
-    const continents = 6 + Math.floor(this.rand(0, 4));
-    for (let i = 0; i < continents; i++) {
-      const cx = this.rand(0, W),
-        cy = this.rand(H * 0.18, H * 0.82);
-      const blobs = 8 + Math.floor(this.rand(0, 10));
-      for (let b = 0; b < blobs; b++) {
-        const x = cx + this.rand(-46, 46);
-        const y = cy + this.rand(-26, 26);
-        const r = this.rand(6, 22);
-        ctx.fillStyle = this.state.rng() < 0.7 ? "#2b8a3e" : "#a98146";
-        ctx.globalAlpha = this.rand(0.5, 0.9);
-        ctx.beginPath();
-        ctx.ellipse(
-          x,
-          y,
-          r * this.rand(1, 1.8),
-          r,
-          this.rand(0, Math.PI),
-          0,
-          Math.PI * 2,
-        );
-        ctx.fill();
-      }
-    }
-
-    // polar ice caps
-    ctx.globalAlpha = 0.9;
-    ctx.fillStyle = "#f1f3f5";
-    ctx.fillRect(0, 0, W, 14);
-    ctx.fillRect(0, H - 14, W, 14);
-
-    // soft cloud streaks
-    for (let i = 0; i < 26; i++) {
-      const x = this.rand(0, W),
-        y = this.rand(0, H);
-      const r = this.rand(10, 34);
-      const g = ctx.createRadialGradient(x, y, 0, x, y, r);
-      g.addColorStop(0, "rgba(255,255,255,0.55)");
-      g.addColorStop(1, "rgba(255,255,255,0)");
-      ctx.globalAlpha = this.rand(0.2, 0.5);
-      ctx.fillStyle = g;
-      ctx.beginPath();
-      ctx.ellipse(
-        x,
-        y,
-        r * 2.2,
-        r * 0.55,
-        this.rand(-0.3, 0.3),
-        0,
-        Math.PI * 2,
-      );
-      ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-
-    const tex = new THREE.CanvasTexture(cv);
+  makeEarthTexture(src) {
+    const tex = new THREE.TextureLoader().load(src);
     tex.colorSpace = THREE.SRGBColorSpace;
     tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.RepeatWrapping;
     return tex;
+  },
+
+  makeEarthNightTexture() {
+    const tex = new THREE.TextureLoader().load(
+      "/oneos/static/assets/earth/earth_lights.png",
+    );
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.RepeatWrapping;
+    return tex;
+  },
+
+  makeEarthCloudTexture() {
+    const tex = new THREE.TextureLoader().load(
+      "/oneos/static/assets/earth/cloud_combined.jpg",
+    );
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.RepeatWrapping;
+    return tex;
+  },
+
+  getFresnelMat({ rimHex = 0x3abef9, facingHex = 0x000000 } = {}) {
+    return new THREE.ShaderMaterial({
+      uniforms: {
+        color1: { value: new THREE.Color(rimHex) },
+        color2: { value: new THREE.Color(facingHex) },
+        fresnelBias: { value: 0.2 },
+        fresnelScale: { value: 1.0 },
+        fresnelPower: { value: 8.0 },
+      },
+      vertexShader: `
+        uniform float fresnelBias;
+        uniform float fresnelScale;
+        uniform float fresnelPower;
+        varying float vReflectionFactor;
+        void main() {
+          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+          vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+          vec3 worldNormal = normalize(mat3(modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz) * normal);
+          vec3 I = worldPosition.xyz - cameraPosition;
+          vReflectionFactor = fresnelBias + fresnelScale * pow(1.0 + dot(normalize(I), worldNormal), fresnelPower);
+          gl_Position = projectionMatrix * mvPosition;
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 color1;
+        uniform vec3 color2;
+        varying float vReflectionFactor;
+        void main() {
+          float f = clamp(vReflectionFactor, 0.0, 1.0);
+          gl_FragColor = vec4(mix(color2, color1, vec3(f)), f);
+        }
+      `,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+    });
+  },
+
+  createDetailedEarthLayer(radius) {
+    const loader = new THREE.TextureLoader();
+    const geometry = new THREE.IcosahedronGeometry(radius, 14);
+    const group = new THREE.Group();
+    group.visible = false;
+
+    const earthMesh = new THREE.Mesh(
+      geometry,
+      new THREE.MeshPhongMaterial({
+        map: loader.load("/oneos/static/assets/earth/earthmap.jpg"),
+      }),
+    );
+    group.add(earthMesh);
+
+    const lightsMesh = new THREE.Mesh(
+      geometry,
+      new THREE.MeshBasicMaterial({
+        map: loader.load("/oneos/static/assets/earth/earth_lights.png"),
+        blending: THREE.AdditiveBlending,
+        transparent: true,
+        opacity: 0.95,
+      }),
+    );
+    group.add(lightsMesh);
+
+    const cloudsMesh = new THREE.Mesh(
+      geometry,
+      new THREE.MeshStandardMaterial({
+        map: loader.load("/oneos/static/assets/earth/cloud_combined.jpg"),
+        transparent: true,
+        opacity: 0.88,
+        blending: THREE.AdditiveBlending,
+      }),
+    );
+    cloudsMesh.scale.setScalar(1.003);
+    group.add(cloudsMesh);
+
+    const glowMesh = new THREE.Mesh(geometry, this.getFresnelMat());
+    glowMesh.scale.setScalar(1.01);
+    group.add(glowMesh);
+
+    group.rotation.z = (-23.4 * Math.PI) / 180;
+    group.userData = {
+      earthMesh,
+      lightsMesh,
+      cloudsMesh,
+      glowMesh,
+      detailed: true,
+    };
+
+    return { group };
   },
 
   makeRingTexture(color) {
@@ -1623,6 +1938,450 @@ const CosmicLogin = {
     });
   },
 
+  /* ----------------------- famous deep-sky objects (clickable + searchable) */
+  createDeepSkyObjects() {
+    const s = this.state;
+
+    (this.config.deepSky || []).forEach((d) => {
+      const isGalaxy = d.kind === "galaxy";
+      const sprite = new THREE.Sprite(
+        new THREE.SpriteMaterial({
+          map: isGalaxy
+            ? this.makeDistantGalaxyTexture(d.color)
+            : this.makeGlowTexture(d.color, "transparent"),
+          color: new THREE.Color(d.color),
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+          transparent: true,
+          opacity: d.opacity || 0.85,
+          rotation: this.rand(0, Math.PI * 2),
+          fog: false,
+        }),
+      );
+      sprite.position.copy(
+        this.randomDirection().multiplyScalar(d.distance),
+      );
+      const sc = d.scale || 120;
+      sprite.scale.set(sc, sc * (isGalaxy ? this.rand(0.45, 0.7) : 1), 1);
+      sprite.userData = {
+        name: d.name,
+        type: d.type,
+        meta: d.meta,
+        kind: d.kind,
+        focusDist: d.focusDist || sc * 2.6,
+        wikiTitle: d.wikiTitle || d.name,
+      };
+      s.scene.add(sprite);
+      s.hoverables.push(sprite);
+      s.searchExtras.push(sprite);
+    });
+  },
+
+  createMajorConstellations() {
+    const defs = [
+      {
+        name: "Orion",
+        wikiTitle: "Orion (constellation)",
+        meta: "Hunter pattern with Betelgeuse, Rigel, and Orion's Belt",
+        position: [760, 420, -540],
+        rotation: [0.12, 2.3, -0.06],
+        focusDist: 260,
+        view: { theta: -0.38, phi: 1.16, radius: 260, mobileRadius: 320 },
+        interactiveStars: true,
+        stars: [
+          {
+            name: "Betelgeuse",
+            x: -34,
+            y: 36,
+            scale: 18,
+            color: "#ffe8bf",
+            type: "Red supergiant star",
+            meta: "Distance: 548 light years · Orion shoulder star",
+          },
+          {
+            name: "Bellatrix",
+            x: 34,
+            y: 28,
+            scale: 15,
+            color: "#d0ebff",
+            type: "Blue giant star",
+            meta: "Distance: 250 light years · Orion shoulder star",
+          },
+          {
+            name: "Mintaka",
+            x: -18,
+            y: 2,
+            scale: 11,
+            color: "#fff3bf",
+            type: "Multiple star system",
+            meta: "Distance: 1,200 light years · Western belt star",
+          },
+          {
+            name: "Alnilam",
+            x: 0,
+            y: -2,
+            scale: 12,
+            color: "#f8f9fa",
+            type: "Blue supergiant star",
+            meta: "Distance: 2,000 light years · Central belt star",
+          },
+          {
+            name: "Alnitak",
+            x: 19,
+            y: 1,
+            scale: 11,
+            color: "#d0ebff",
+            type: "Triple star system",
+            meta: "Distance: 1,260 light years · Eastern belt star",
+          },
+          {
+            name: "Saiph",
+            x: -28,
+            y: -30,
+            scale: 15,
+            color: "#d0ebff",
+            type: "Blue supergiant star",
+            meta: "Distance: 650 light years · Lower Orion star",
+          },
+          {
+            name: "Rigel",
+            x: 29,
+            y: -38,
+            scale: 19,
+            color: "#d0ebff",
+            type: "Blue supergiant star",
+            meta: "Distance: 860 light years · Orion foot star",
+          },
+          {
+            name: "Theta1 Orionis C",
+            wikiTitle: "Theta1 Orionis C",
+            x: 6,
+            y: -18,
+            scale: 8,
+            color: "#c5f6fa",
+            type: "Multiple star system",
+            meta: "Distance: 1,344 light years · Trapezium in Orion's Sword",
+          },
+        ],
+        segments: [
+          [0, 2],
+          [1, 4],
+          [2, 3],
+          [3, 4],
+          [2, 5],
+          [4, 6],
+          [3, 7],
+        ],
+      },
+      {
+        name: "Ursa Major",
+        wikiTitle: "Ursa Major",
+        meta: "Great Bear pattern including the Big Dipper asterism",
+        position: [-820, 280, -500],
+        rotation: [-0.08, 0.6, 0.12],
+        focusDist: 250,
+        interactiveStars: true,
+        view: { theta: -0.24, phi: 1.08, radius: 250, mobileRadius: 310 },
+        stars: [
+          { name: "Dubhe", x: -36, y: 18, scale: 15, color: "#d0ebff", type: "Giant star", meta: "Distance: 123 light years · Pointer star" },
+          { name: "Merak", x: -12, y: 10, scale: 12, color: "#fff3bf", type: "Main sequence star", meta: "Distance: 79 light years · Pointer star" },
+          { name: "Phecda", x: 10, y: 7, scale: 11, color: "#f8f9fa", type: "Main sequence star", meta: "Distance: 83 light years · Bowl star" },
+          { name: "Megrez", x: 36, y: 3, scale: 14, color: "#d0ebff", type: "Main sequence star", meta: "Distance: 81 light years · Junction star" },
+          { name: "Alioth", x: 54, y: -14, scale: 12, color: "#fff3bf", type: "Blue-white giant star", meta: "Distance: 82 light years · Tail star" },
+          { name: "Mizar", x: 34, y: -31, scale: 11, color: "#f8f9fa", type: "Quadruple star system", meta: "Distance: 86 light years · Famous double star" },
+          { name: "Alkaid", x: 6, y: -36, scale: 13, color: "#d0ebff", type: "Blue-white star", meta: "Distance: 104 light years · Tail tip star" },
+        ],
+        segments: [
+          [0, 1],
+          [1, 2],
+          [2, 3],
+          [3, 4],
+          [4, 5],
+          [5, 6],
+        ],
+      },
+      {
+        name: "Cassiopeia",
+        wikiTitle: "Cassiopeia (constellation)",
+        meta: "W-shaped northern constellation",
+        position: [680, -360, 640],
+        rotation: [0.1, 4.5, -0.2],
+        focusDist: 235,
+        interactiveStars: true,
+        view: { theta: 0.18, phi: 1.1, radius: 235, mobileRadius: 295 },
+        stars: [
+          { name: "Caph", x: -44, y: 2, scale: 11, color: "#fff3bf", type: "Yellow-white giant star", meta: "Distance: 55 light years · Western Cassiopeia star" },
+          { name: "Schedar", x: -20, y: 22, scale: 12, color: "#d0ebff", type: "Orange giant star", meta: "Distance: 228 light years · Bright Cassiopeia star" },
+          { name: "Gamma Cassiopeiae", wikiTitle: "Gamma Cassiopeiae", x: 2, y: -2, scale: 13, color: "#f8f9fa", type: "Eruptive variable star", meta: "Distance: 550 light years · Central W star" },
+          { name: "Ruchbah", x: 26, y: 24, scale: 11, color: "#d0ebff", type: "Binary star system", meta: "Distance: 99 light years · Northern W star" },
+          { name: "Segin", x: 50, y: -4, scale: 12, color: "#fff3bf", type: "Blue-white giant star", meta: "Distance: 441 light years · Eastern Cassiopeia star" },
+        ],
+        segments: [
+          [0, 1],
+          [1, 2],
+          [2, 3],
+          [3, 4],
+        ],
+      },
+      {
+        name: "Scorpius",
+        wikiTitle: "Scorpius",
+        meta: "Curving scorpion with bright Antares at its heart",
+        position: [-520, -320, 760],
+        rotation: [-0.18, 5.5, 0.2],
+        focusDist: 255,
+        interactiveStars: true,
+        view: { theta: -0.28, phi: 1.04, radius: 255, mobileRadius: 320 },
+        stars: [
+          { name: "Acrab", x: -44, y: 24, scale: 10, color: "#d0ebff", type: "Multiple star system", meta: "Distance: 530 light years · Head of Scorpius" },
+          { name: "Dschubba", x: -20, y: 10, scale: 12, color: "#fff3bf", type: "Blue subgiant star", meta: "Distance: 400 light years · Forehead star" },
+          { name: "Antares", x: 0, y: 4, scale: 18, color: "#ffc9c9", type: "Red supergiant star", meta: "Distance: 550 light years · Heart of the Scorpion" },
+          { name: "Sargas", x: 24, y: -10, scale: 11, color: "#d0ebff", type: "Yellow giant star", meta: "Distance: 270 light years · Body star" },
+          { name: "Shaula", x: 42, y: -28, scale: 10, color: "#f8f9fa", type: "Blue giant star", meta: "Distance: 570 light years · Stinger star" },
+          { name: "Lesath", x: 58, y: -44, scale: 9, color: "#d0ebff", type: "Blue subgiant star", meta: "Distance: 580 light years · Twin stinger star" },
+        ],
+        segments: [
+          [0, 1],
+          [1, 2],
+          [2, 3],
+          [3, 4],
+          [4, 5],
+        ],
+      },
+      {
+        name: "Cygnus",
+        wikiTitle: "Cygnus (constellation)",
+        meta: "Northern Cross constellation along the Milky Way",
+        position: [360, 520, 720],
+        rotation: [0.22, 3.6, -0.15],
+        focusDist: 235,
+        interactiveStars: true,
+        view: { theta: 0.16, phi: 1.14, radius: 235, mobileRadius: 295 },
+        stars: [
+          { name: "Deneb", x: 0, y: 34, scale: 15, color: "#fff3bf", type: "Blue-white supergiant star", meta: "Distance: 2,600 light years · Tail of the Swan" },
+          { name: "Sadr", x: 0, y: 8, scale: 12, color: "#f8f9fa", type: "Yellow-white supergiant star", meta: "Distance: 1,800 light years · Heart of Cygnus" },
+          { name: "Albireo", x: 0, y: -18, scale: 10, color: "#d0ebff", type: "Binary star", meta: "Distance: 430 light years · Beak of the Swan" },
+          { name: "Gienah", x: -28, y: 10, scale: 11, color: "#d0ebff", type: "Blue-white giant star", meta: "Distance: 72 light years · Wing star" },
+          { name: "Delta Cygni", wikiTitle: "Delta Cygni", x: 30, y: 10, scale: 11, color: "#d0ebff", type: "Triple star system", meta: "Distance: 171 light years · Wing star" },
+        ],
+        segments: [
+          [0, 1],
+          [1, 2],
+          [3, 1],
+          [1, 4],
+        ],
+      },
+      {
+        name: "Leo",
+        wikiTitle: "Leo (constellation)",
+        meta: "Lion-shaped spring constellation with the Sickle asterism",
+        position: [-720, 520, 260],
+        rotation: [0.08, 1.8, 0.08],
+        focusDist: 240,
+        interactiveStars: true,
+        view: { theta: -0.16, phi: 1.08, radius: 240, mobileRadius: 300 },
+        stars: [
+          { name: "Regulus", x: -34, y: 16, scale: 15, color: "#d0ebff", type: "Blue-white multiple star system", meta: "Distance: 79 light years · Heart of the Lion" },
+          { name: "Adhafera", x: -12, y: 28, scale: 11, color: "#fff3bf", type: "Giant star", meta: "Distance: 274 light years · Mane star" },
+          { name: "Algieba", x: 10, y: 18, scale: 11, color: "#f8f9fa", type: "Binary giant stars", meta: "Distance: 130 light years · Mane star" },
+          { name: "Chertan", x: 20, y: -2, scale: 12, color: "#d0ebff", type: "White subgiant star", meta: "Distance: 165 light years · Body star" },
+          { name: "Zosma", x: 6, y: -26, scale: 10, color: "#fff3bf", type: "Blue-white star", meta: "Distance: 58 light years · Haunch star" },
+          { name: "Denebola", x: 42, y: -14, scale: 12, color: "#d0ebff", type: "Main sequence star", meta: "Distance: 36 light years · Tail of Leo" },
+        ],
+        segments: [
+          [0, 1],
+          [1, 2],
+          [2, 3],
+          [3, 4],
+          [3, 5],
+        ],
+      },
+      {
+        name: "Taurus",
+        wikiTitle: "Taurus (constellation)",
+        meta: "Bull constellation marked by the V of the Hyades",
+        position: [920, 120, 220],
+        rotation: [-0.14, 2.1, 0.04],
+        focusDist: 240,
+        interactiveStars: true,
+        view: { theta: 0.24, phi: 1.08, radius: 240, mobileRadius: 300 },
+        stars: [
+          { name: "Aldebaran", x: -10, y: 0, scale: 18, color: "#ffddb0", type: "Red giant star", meta: "Distance: 65 light years · Eye of the Bull" },
+          { name: "Elnath", x: -34, y: 18, scale: 11, color: "#d0ebff", type: "Blue-white giant star", meta: "Distance: 131 light years · Horn star" },
+          { name: "Ain", x: -30, y: -18, scale: 11, color: "#d0ebff", type: "Orange giant star", meta: "Distance: 154 light years · Hyades star" },
+          { name: "Hyadum I", wikiTitle: "Gamma Tauri", x: 18, y: 22, scale: 10, color: "#fff3bf", type: "Giant star", meta: "Distance: 154 light years · Hyades star" },
+          { name: "Hyadum II", wikiTitle: "Delta Tauri", x: 34, y: 6, scale: 10, color: "#f8f9fa", type: "Triple star system", meta: "Distance: 153 light years · Hyades star" },
+          { name: "Zeta Tauri", wikiTitle: "Zeta Tauri", x: 20, y: -18, scale: 10, color: "#d0ebff", type: "Binary star system", meta: "Distance: 440 light years · Horn tip star" },
+        ],
+        segments: [
+          [0, 1],
+          [0, 2],
+          [0, 3],
+          [3, 4],
+          [0, 5],
+        ],
+      },
+      {
+        name: "Gemini",
+        wikiTitle: "Gemini (constellation)",
+        meta: "Twin-star constellation anchored by Castor and Pollux",
+        position: [-980, -80, -120],
+        rotation: [0.16, 0.9, -0.08],
+        focusDist: 230,
+        interactiveStars: true,
+        view: { theta: -0.18, phi: 1.06, radius: 230, mobileRadius: 290 },
+        stars: [
+          { name: "Castor", x: -16, y: 34, scale: 12, color: "#d0ebff", type: "Multiple star system", meta: "Distance: 51 light years · Northern twin" },
+          { name: "Pollux", x: 18, y: 34, scale: 14, color: "#fff3bf", type: "Orange giant star", meta: "Distance: 34 light years · Southern twin" },
+          { name: "Wasat", x: -18, y: 10, scale: 10, color: "#f8f9fa", type: "Triple star system", meta: "Distance: 59 light years · Mid-body star" },
+          { name: "Alhena", x: 16, y: 8, scale: 10, color: "#d0ebff", type: "Blue-white subgiant star", meta: "Distance: 109 light years · Foot star" },
+          { name: "Tejat", x: -22, y: -16, scale: 9, color: "#d0ebff", type: "Binary star", meta: "Distance: 224 light years · Lower twin star" },
+          { name: "Mekbuda", x: 14, y: -18, scale: 9, color: "#fff3bf", type: "Supergiant variable star", meta: "Distance: 1,410 light years · Lower twin star" },
+        ],
+        segments: [
+          [0, 2],
+          [2, 4],
+          [1, 3],
+          [3, 5],
+          [2, 3],
+        ],
+      },
+      {
+        name: "Canis Major",
+        wikiTitle: "Canis Major",
+        meta: "Home of Sirius, the brightest star in the night sky",
+        position: [520, -520, -300],
+        rotation: [-0.24, 3.2, 0.18],
+        focusDist: 240,
+        interactiveStars: true,
+        view: { theta: 0.12, phi: 1.04, radius: 240, mobileRadius: 300 },
+        stars: [
+          { name: "Mirzam", x: -34, y: 18, scale: 11, color: "#d0ebff", type: "Blue-white giant star", meta: "Distance: 500 light years · Front paw star" },
+          { name: "Sirius", x: -8, y: 6, scale: 20, color: "#f8f9fa", type: "Main sequence star", meta: "Distance: 8.6 light years · Brightest night star" },
+          { name: "Adhara", x: 18, y: -8, scale: 11, color: "#d0ebff", type: "Blue-white giant star", meta: "Distance: 430 light years · Rear star" },
+          { name: "Wezen", x: 40, y: -30, scale: 10, color: "#fff3bf", type: "Yellow-white supergiant star", meta: "Distance: 1,600 light years · Tailward star" },
+        ],
+        segments: [
+          [0, 1],
+          [1, 2],
+          [2, 3],
+        ],
+      },
+      {
+        name: "Crux",
+        wikiTitle: "Crux",
+        meta: "Southern Cross asterism and navigation marker",
+        position: [120, -620, 860],
+        rotation: [0.24, 4.1, -0.04],
+        focusDist: 220,
+        interactiveStars: true,
+        view: { theta: 0.1, phi: 1.12, radius: 220, mobileRadius: 280 },
+        stars: [
+          { name: "Gacrux", x: 0, y: 34, scale: 12, color: "#d0ebff", type: "Red giant star", meta: "Distance: 89 light years · Top of the Cross" },
+          { name: "Mimosa", x: 0, y: 6, scale: 16, color: "#fff3bf", type: "Blue giant star", meta: "Distance: 280 light years · Bright Cross star" },
+          { name: "Acrux", x: 0, y: -24, scale: 11, color: "#d0ebff", type: "Multiple star system", meta: "Distance: 320 light years · Base of the Cross" },
+          { name: "Delta Crucis", wikiTitle: "Delta Crucis", x: -22, y: 4, scale: 10, color: "#f8f9fa", type: "Blue-white subgiant star", meta: "Distance: 345 light years · Left arm star" },
+          { name: "Epsilon Crucis", wikiTitle: "Epsilon Crucis", x: 24, y: 6, scale: 10, color: "#d0ebff", type: "Orange giant star", meta: "Distance: 230 light years · Right arm star" },
+        ],
+        segments: [
+          [0, 1],
+          [1, 2],
+          [3, 1],
+          [1, 4],
+        ],
+      },
+    ];
+
+    defs.forEach((def) => this.createConstellation(def));
+  },
+
+  createConstellation(def) {
+    const s = this.state;
+    const group = new THREE.Group();
+    group.position.set(...def.position);
+    group.rotation.set(...def.rotation);
+
+    const starMap = this.makeStarSpriteTexture();
+    const starPoints = [];
+    let maxExtent = 0;
+
+    def.stars.forEach((star) => {
+      const sprite = new THREE.Sprite(
+        new THREE.SpriteMaterial({
+          map: starMap,
+          color: new THREE.Color(star.color),
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+          transparent: true,
+          opacity: 0.95,
+        }),
+      );
+      sprite.position.set(star.x, star.y, star.z || 0);
+      sprite.scale.setScalar(star.scale);
+      group.add(sprite);
+      starPoints.push(sprite.position.clone());
+      maxExtent = Math.max(maxExtent, Math.hypot(star.x, star.y, star.z || 0));
+
+      if (def.interactiveStars) {
+        const starProxy = new THREE.Mesh(
+          new THREE.SphereGeometry(Math.max(4.5, star.scale * 0.4), 12, 12),
+          new THREE.MeshBasicMaterial({ visible: false }),
+        );
+        starProxy.position.copy(sprite.position);
+        starProxy.userData = {
+          name: star.name,
+          type: star.type || "Star",
+          meta: star.meta || `Part of the ${def.name} constellation`,
+          kind: "star",
+          focusDist: 78,
+          wikiTitle: star.wikiTitle || star.name,
+        };
+        group.add(starProxy);
+        s.hoverables.push(starProxy);
+      }
+    });
+
+    const linePoints = [];
+    def.segments.forEach(([a, b]) => {
+      linePoints.push(starPoints[a], starPoints[b]);
+    });
+    const line = new THREE.LineSegments(
+      new THREE.BufferGeometry().setFromPoints(linePoints),
+      new THREE.LineBasicMaterial({
+        color: 0x8ec5ff,
+        transparent: true,
+        opacity: 0.38,
+        depthWrite: false,
+      }),
+    );
+    group.add(line);
+
+    const proxy = new THREE.Mesh(
+      new THREE.SphereGeometry(Math.max(40, maxExtent + 14), 12, 12),
+      new THREE.MeshBasicMaterial({ visible: false }),
+    );
+    proxy.userData = {
+      name: `${def.name} Constellation`,
+      type: "Constellation",
+      meta: def.meta,
+      kind: "constellation",
+      focusDist: def.focusDist || 240,
+      wikiTitle: def.wikiTitle,
+      view:
+        def.view || {
+          theta: this.rand(-Math.PI, Math.PI),
+          phi: this.rand(0.92, 1.28),
+          radius: def.focusDist || 240,
+          mobileRadius: (def.focusDist || 240) + 50,
+        },
+    };
+    group.add(proxy);
+
+    s.scene.add(group);
+    s.hoverables.push(proxy);
+    s.searchExtras.push(proxy);
+  },
+
   /* ----------------------------------------------------------- nebula */
   createNebula() {
     const s = this.state;
@@ -1734,7 +2493,20 @@ const CosmicLogin = {
       s.factOpen ? "true" : "false",
     );
     s.el.panel.classList.toggle("fact-open", s.factOpen);
-    if (s.factOpen) this.loadCosmicFact();
+    if (s.factOpen && open === undefined) this.loadCosmicFact();
+  },
+
+  setObjectCardOpen(open) {
+    const card = this.state.el.objectCard;
+    if (!card) return;
+    card.classList.toggle("is-open", open);
+    card.setAttribute("aria-hidden", open ? "false" : "true");
+  },
+
+  showObjectFact(obj) {
+    if (!obj?.userData?.name) return;
+    this.setObjectCardOpen(true);
+    this.loadObjectFact(obj.userData);
   },
 
   /* ----------------------------------------------------- login controls */
@@ -1762,6 +2534,11 @@ const CosmicLogin = {
     }
     s.el.minimize.addEventListener("click", () => this.setPanelHidden(true));
     s.el.restore.addEventListener("click", () => this.setPanelHidden(false));
+    if (s.el.objectCardClose) {
+      s.el.objectCardClose.addEventListener("click", () =>
+        this.setObjectCardOpen(false),
+      );
+    }
   },
 
   setPanelHidden(hidden) {
@@ -1798,44 +2575,120 @@ const CosmicLogin = {
   },
 
   /* ----------------------------------------------------- fact card */
-  async loadCosmicFact() {
+  async loadCosmicFact(target = null) {
     const el = this.state.el;
+    const requestId = ++this.state.factRequestId;
     el.factCard.classList.add("is-loading");
     el.factTitle.textContent = "Scanning deep space…";
     el.factType.textContent = "";
     el.factText.textContent = "";
     el.factLink.hidden = true;
+    el.factLink.textContent = "Read more on Wikipedia →";
     el.factImage.hidden = true;
+    el.factImage.removeAttribute("src");
 
     try {
-      const resp = await fetch("/api/cosmic-fact", { cache: "no-store" });
+      let factUrl = window.ONEOS_COSMIC_FACT_URL || "/api/cosmic-fact";
+      if (target?.name) {
+        const params = new URLSearchParams({
+          name: target.name,
+          type: target.type || "",
+          kind: target.kind || "",
+          wikiTitle: target.wikiTitle || "",
+        });
+        factUrl =
+          (window.ONEOS_COSMIC_OBJECT_FACT_URL || "/api/cosmic-object-fact") +
+          "?" +
+          params.toString();
+      }
+      const resp = await fetch(factUrl, { cache: "no-store" });
       if (!resp.ok) throw new Error("HTTP " + resp.status);
       const fact = await resp.json();
+      if (requestId !== this.state.factRequestId) return;
 
       el.factTitle.textContent = fact.title;
       el.factType.textContent = fact.type || "";
       el.factText.textContent = fact.extract;
       el.factLink.href = fact.url;
       el.factLink.hidden = false;
+      el.factLink.textContent =
+        fact.source === "search"
+          ? "Open Wikipedia search →"
+          : "Read more on Wikipedia →";
       el.factBadge.textContent =
-        fact.source === "wikipedia" ? "Wikipedia" : "Archive";
+        fact.badge ||
+        (fact.source === "wikipedia"
+          ? "Wikipedia"
+          : fact.source === "search"
+            ? "Wikipedia Search"
+            : "Archive");
 
       if (fact.image) {
         el.factImage.onload = () => {
+          if (requestId !== this.state.factRequestId) return;
           el.factImage.hidden = false;
           el.factCard.classList.remove("is-loading");
         };
-        el.factImage.onerror = () => el.factCard.classList.remove("is-loading");
+        el.factImage.onerror = () => {
+          if (requestId !== this.state.factRequestId) return;
+          el.factCard.classList.remove("is-loading");
+        };
         el.factImage.src = fact.image;
         el.factImage.alt = fact.title;
       } else {
         el.factCard.classList.remove("is-loading");
       }
     } catch (err) {
+      if (requestId !== this.state.factRequestId) return;
       el.factTitle.textContent = "Deep space link offline";
       el.factText.textContent =
         "Couldn't reach Wikipedia right now — the universe will still be here on your next visit.";
+      el.factBadge.textContent = "Wikipedia";
       el.factCard.classList.remove("is-loading");
+    }
+  },
+
+  async loadObjectFact(target) {
+    const el = this.state.el;
+    const requestId = ++this.state.objectFactRequestId;
+    el.objectCardTitle.textContent = target?.name || "Celestial Object";
+    el.objectCardType.textContent = target?.type || "";
+    el.objectCardText.textContent = "Scanning object archive…";
+    el.objectCardLink.hidden = true;
+    el.objectCardLink.textContent = "Open Wikipedia →";
+
+    try {
+      const params = new URLSearchParams({
+        name: target?.name || "",
+        type: target?.type || "",
+        kind: target?.kind || "",
+        wikiTitle: target?.wikiTitle || "",
+      });
+      const factUrl =
+        (window.ONEOS_COSMIC_OBJECT_FACT_URL || "/api/cosmic-object-fact") +
+        "?" +
+        params.toString();
+      const resp = await fetch(factUrl, { cache: "no-store" });
+      if (!resp.ok) throw new Error("HTTP " + resp.status);
+      const fact = await resp.json();
+      if (requestId !== this.state.objectFactRequestId) return;
+
+      el.objectCardTitle.textContent = fact.title || target.name;
+      el.objectCardType.textContent = fact.type || target.type || "";
+      el.objectCardText.textContent =
+        fact.extract || target.meta || "Open Wikipedia for more details.";
+      el.objectCardLink.href = fact.url;
+      el.objectCardLink.textContent =
+        fact.source === "search" ? "Open Wikipedia search →" : "Open Wikipedia →";
+      el.objectCardLink.hidden = false;
+    } catch (err) {
+      if (requestId !== this.state.objectFactRequestId) return;
+      el.objectCardTitle.textContent = target?.name || "Celestial Object";
+      el.objectCardType.textContent = target?.type || "";
+      el.objectCardText.textContent =
+        target?.meta ||
+        "Wikipedia is unavailable right now. Try again in a moment.";
+      el.objectCardLink.hidden = true;
     }
   },
 
@@ -1845,6 +2698,11 @@ const CosmicLogin = {
       canvas = s.el.canvas,
       cam = this.config.camera;
 
+    // live map of every pointer currently down on the canvas — one entry is a
+    // drag-to-orbit gesture, two entries is a pinch-to-zoom gesture (touch).
+    s.pointers = new Map();
+    s.pinch = null;
+
     window.addEventListener(
       "pointermove",
       (e) => {
@@ -1853,6 +2711,23 @@ const CosmicLogin = {
         s.pointerNDC.set(s.mouse.x, -s.mouse.y);
         // only hover-pick when the pointer is actually over the canvas
         s.pointerOnCanvas = e.target === canvas;
+
+        if (s.pointers.has(e.pointerId)) {
+          s.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        }
+
+        // two fingers down → pinch to zoom, and suppress orbiting
+        if (s.pinch && s.pointers.size >= 2) {
+          const dist = this.pinchDistance();
+          if (dist > 0 && s.pinch.startDist > 0) {
+            s.radiusTarget = THREE.MathUtils.clamp(
+              s.pinch.startRadius * (s.pinch.startDist / dist),
+              cam.minRadius,
+              cam.maxRadius,
+            );
+          }
+          return;
+        }
 
         if (s.dragging) {
           const dx = e.clientX - s.dragStart.x;
@@ -1870,6 +2745,24 @@ const CosmicLogin = {
     );
 
     canvas.addEventListener("pointerdown", (e) => {
+      s.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      canvas.setPointerCapture(e.pointerId);
+
+      // keep the raycast coords current — a touch tap can fire pointerdown →
+      // pointerup with no pointermove in between, leaving pointerNDC stale
+      this.setPointerNDCFromEvent(e);
+
+      if (s.pointers.size >= 2) {
+        // a second finger landed — begin a pinch and cancel the orbit drag
+        s.dragging = false;
+        canvas.classList.remove("dragging");
+        s.pinch = {
+          startDist: this.pinchDistance(),
+          startRadius: s.radiusTarget,
+        };
+        return;
+      }
+
       s.dragging = true;
       s.moved = 0;
       s.dragStart = {
@@ -1878,20 +2771,54 @@ const CosmicLogin = {
         theta: s.thetaTarget,
         phi: s.phiTarget,
       };
-      canvas.setPointerCapture(e.pointerId);
       canvas.classList.add("dragging");
     });
 
-    const endDrag = (e) => {
+    const endPointer = (e) => {
+      const wasPinching = !!s.pinch;
+      s.pointers.delete(e.pointerId);
+      try {
+        canvas.releasePointerCapture(e.pointerId);
+      } catch (_) {
+        /* pointer already released */
+      }
+
+      // dropping out of a pinch: don't let the lifted finger fire a click, and
+      // re-seat the orbit origin on whichever finger is still down so the view
+      // doesn't jump when the pinch ends.
+      if (wasPinching && s.pointers.size < 2) {
+        s.pinch = null;
+        s.dragging = false;
+        s.moved = 999; // never let a post-pinch finger lift register as a tap
+        canvas.classList.remove("dragging");
+        const survivor = [...s.pointers.values()][0];
+        if (survivor) {
+          s.dragStart = {
+            x: survivor.x,
+            y: survivor.y,
+            theta: s.thetaTarget,
+            phi: s.phiTarget,
+          };
+          s.dragging = true;
+          canvas.classList.add("dragging");
+        }
+        return;
+      }
+
       if (!s.dragging) return;
       s.dragging = false;
       canvas.classList.remove("dragging");
-      if (s.moved < 6 && e.type === "pointerup") this.handleClick();
+      if (s.moved < 6 && e.type === "pointerup") {
+        // raycast from the exact lift point so touch taps select reliably
+        this.setPointerNDCFromEvent(e);
+        this.handleClick();
+      }
     };
-    canvas.addEventListener("pointerup", endDrag);
-    canvas.addEventListener("pointercancel", endDrag);
+    canvas.addEventListener("pointerup", endPointer);
+    canvas.addEventListener("pointercancel", endPointer);
 
-    // fly from inside the system all the way out past the galaxies
+    // fly from inside the system all the way out past the galaxies (mouse wheel
+    // / trackpad — touch devices use the pinch gesture handled above)
     canvas.addEventListener(
       "wheel",
       (e) => {
@@ -1907,14 +2834,34 @@ const CosmicLogin = {
     );
   },
 
+  // sync the raycaster's normalized device coords to a pointer event
+  setPointerNDCFromEvent(e) {
+    const s = this.state;
+    s.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+    s.mouse.y = (e.clientY / window.innerHeight) * 2 - 1;
+    s.pointerNDC.set(s.mouse.x, -s.mouse.y);
+    s.pointerOnCanvas = true;
+  },
+
+  // screen-space distance between the two active touch points (0 if <2 down)
+  pinchDistance() {
+    const pts = [...this.state.pointers.values()];
+    if (pts.length < 2) return 0;
+    const [a, b] = pts;
+    return Math.hypot(a.x - b.x, a.y - b.y);
+  },
+
   handleClick() {
     const s = this.state;
     s.raycaster.setFromCamera(s.pointerNDC, s.camera);
     const hits = s.raycaster.intersectObjects(s.hoverables, false);
 
     if (hits.length) {
-      this.flyToObject(hits[0].object);
+      const target = this.pickPreferredObject(hits);
+      this.flyToObject(target);
+      this.showObjectFact(target);
     } else {
+      this.setObjectCardOpen(false);
       s.focusObj = null;
       s.lookGoal.set(0, 0, 0);
       s.radiusTarget = THREE.MathUtils.clamp(
@@ -1923,6 +2870,25 @@ const CosmicLogin = {
         this.config.camera.maxRadius,
       );
     }
+  },
+
+  pickPreferredObject(hits) {
+    if (!hits.length) return null;
+    const farView = this.state.radius > 360 || this.state.radiusTarget > 360;
+    const constellation = hits.find(
+      (hit) => hit.object?.userData?.kind === "constellation",
+    )?.object;
+    const star = hits.find((hit) => hit.object?.userData?.kind === "star")
+      ?.object;
+    const other = hits.find(
+      (hit) =>
+        hit.object?.userData?.kind &&
+        hit.object?.userData?.kind !== "constellation" &&
+        hit.object?.userData?.kind !== "star",
+    )?.object;
+
+    if (farView && constellation) return constellation;
+    return star || other || constellation || hits[0].object;
   },
 
   flyToObject(obj) {
@@ -1943,6 +2909,36 @@ const CosmicLogin = {
     }
   },
 
+  syncEarthDetailLayer() {
+    const s = this.state;
+    const earthEntry = s.planets.find((p) => p.body?.userData?.name === "Earth");
+    if (!earthEntry || !s.earthDetail) return;
+
+    const isEarthFocus =
+      s.focusObj?.userData?.name === "Earth" && s.radiusTarget <= 24;
+    const showDetailed = isEarthFocus || s.radius <= 22;
+
+    const earthPos = new THREE.Vector3();
+    earthEntry.body.getWorldPosition(earthPos);
+
+    s.earthDetail.group.position.copy(earthPos);
+    s.earthDetail.group.visible = showDetailed;
+
+    earthEntry.body.visible = !showDetailed;
+    // Keep Earth's moon system visible during the high-detail Earth swap.
+    // The detailed Earth layer is positioned at the same world origin, so the
+    // moon and submoons can continue orbiting without changing their behavior.
+    if (earthEntry.moonPivot) earthEntry.moonPivot.visible = true;
+
+    const layers = s.earthDetail.group.userData;
+    if (showDetailed && layers) {
+      layers.earthMesh.rotation.y += 0.0019;
+      layers.lightsMesh.rotation.y += 0.0019;
+      layers.cloudsMesh.rotation.y += 0.0026;
+      layers.glowMesh.rotation.y += 0.002;
+    }
+  },
+
   /* ------------------------------------------------------ search */
   buildSearchIndex() {
     const s = this.state;
@@ -1958,6 +2954,7 @@ const CosmicLogin = {
         obj: o,
         name: o.userData.name,
         type: o.userData.type || "",
+        kind: o.userData.kind || "",
       }));
   },
 
@@ -2088,6 +3085,7 @@ const CosmicLogin = {
           it.name.toLowerCase().includes(q) ||
           it.type.toLowerCase().includes(q),
       )
+      .sort((a, b) => this.rankSearchItem(a, q) - this.rankSearchItem(b, q))
       .slice(0, 8);
     s.searchActive = 0;
 
@@ -2136,6 +3134,10 @@ const CosmicLogin = {
           s.searchActive = i;
           this.highlightSearchActive();
         });
+        li.addEventListener("pointerdown", (e) => {
+          e.preventDefault();
+          this.selectSearchResult(it);
+        });
         li.addEventListener("click", () => this.selectSearchResult(it));
         list.appendChild(li);
       });
@@ -2160,6 +3162,8 @@ const CosmicLogin = {
 
   selectSearchResult(item) {
     const s = this.state;
+    const resolved = item?.obj ? item : this.findSearchItem(item?.name || "");
+    if (!resolved?.obj) return;
     s.el.searchInput.value = item.name;
     this.closeSearchResults();
     s.el.searchInput.blur();
@@ -2168,7 +3172,23 @@ const CosmicLogin = {
 
     // clear the stage so the destination is unobstructed
     if (!s.el.panel.classList.contains("is-hidden")) this.setPanelHidden(true);
-    this.flyToObject(item.obj);
+    this.flyToObject(resolved.obj);
+    this.showObjectFact(resolved.obj);
+  },
+
+  rankSearchItem(item, query) {
+    if (!query) return item.kind === "constellation" ? 1 : 2;
+    const name = item.name.toLowerCase();
+    const type = item.type.toLowerCase();
+    let score = 10;
+    if (name === query) score = 0;
+    else if (name.startsWith(query)) score = 1;
+    else if (name.includes(query)) score = 2;
+    else if (type.includes(query)) score = 3;
+
+    if (item.kind === "constellation") score -= 0.4;
+    if (item.kind === "star") score += 0.15;
+    return score;
   },
 
   updateHover() {
@@ -2184,7 +3204,7 @@ const CosmicLogin = {
     }
     s.raycaster.setFromCamera(s.pointerNDC, s.camera);
     const hits = s.raycaster.intersectObjects(s.hoverables, false);
-    const obj = hits.length ? hits[0].object : null;
+    const obj = hits.length ? this.pickPreferredObject(hits) : null;
 
     if (obj !== s.hovered) {
       s.hovered = obj;
@@ -2281,6 +3301,7 @@ const CosmicLogin = {
             p.bob.baseY + Math.sin(t * 0.5 + p.bob.phase) * p.bob.amp * motion;
         }
       });
+      this.syncEarthDetailLayer();
       if (s.belt) s.belt.rotation.y += 0.004 * dt * motion;
 
       s.galaxies.forEach((g) => {
