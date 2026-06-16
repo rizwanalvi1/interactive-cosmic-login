@@ -12,6 +12,10 @@
       }
     }
   </script>
+  <script>
+    window.ONEOS_COSMIC_FACT_URL = {{ cosmic_fact_url|tojson }};
+    window.ONEOS_COSMIC_OBJECT_FACT_URL = {{ cosmic_object_fact_url|tojson }};
+  </script>
 </head>
 <body>
   <main class="cosmic-login-page" id="cosmicPage">
@@ -62,6 +66,17 @@
       <ul class="search-results" id="searchResults" role="listbox" hidden></ul>
     </div>
 
+    <aside class="object-card" id="objectCard" aria-label="Celestial object details" aria-hidden="true">
+      <button class="object-card-close" id="objectCardClose" type="button" aria-label="Close object details">×</button>
+      <div class="object-card-kicker">Explorer</div>
+      <h2 class="object-card-title" id="objectCardTitle">Celestial Object</h2>
+      <p class="object-card-type" id="objectCardType"></p>
+      <p class="object-card-text" id="objectCardText"></p>
+      <a class="object-card-link" id="objectCardLink" href="#" target="_blank" rel="noopener" hidden>
+        Open Wikipedia →
+      </a>
+    </aside>
+
     <!-- Layer 4: login panel -->
     <section class="login-panel" id="loginPanel" aria-label="Login">
       <button class="panel-minimize" id="minimizeLogin" type="button"
@@ -92,23 +107,32 @@
         </div>
       </aside>
 
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="login-flashes" aria-live="polite">
+        {% for category, message in messages %}
+        <div class="login-flash login-flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+
       {% if enable_real_auth %}
       <form class="login-form" method="POST" action="{{ login_action_url }}">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       {% else %}
       <form class="login-form" id="dummyLoginForm" novalidate>
       {% endif %}
 
         <label class="field">
-          <span>Username</span>
-          <input name="username" type="text" placeholder="Enter username"
-                 autocomplete="username" autocapitalize="none" spellcheck="false">
+          <span>Email</span>
+          <input name="email" type="email" placeholder="you@example.com"
+                 autocomplete="username" autocapitalize="none" spellcheck="false" required>
         </label>
 
         <label class="field">
           <span>Password</span>
           <input name="password" type="password" placeholder="Enter password"
-                 autocomplete="current-password">
+                 autocomplete="current-password" required>
         </label>
 
         <button type="submit" class="primary-login-btn">Login</button>
@@ -129,6 +153,11 @@
       {% endif %}
 
       <p class="demo-note" id="demoMessage" aria-live="polite">Cosmic interface demo</p>
+
+      <div class="login-switch">
+        <span>Prefer the classic layout?</span>
+        <a href="{{ alternate_login_url }}" onclick="window.location.href='{{ alternate_login_url }}'; return false;" role="button" aria-label="{{ alternate_login_label }}">{{ alternate_login_label }}</a>
+      </div>
     </section>
 
     <!-- Layer 5: bottom controls / restore login button -->
@@ -138,7 +167,7 @@
     </button>
 
     <p class="explore-hint" id="exploreHint" aria-hidden="true">
-      Drag to orbit &nbsp;&middot;&nbsp; scroll to fly in / out &nbsp;&middot;&nbsp; click a planet to visit it
+      Drag to orbit &nbsp;&middot;&nbsp; scroll or pinch to fly in / out &nbsp;&middot;&nbsp; tap a planet to visit it
     </p>
 
   </main>
